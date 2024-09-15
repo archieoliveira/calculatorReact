@@ -28,14 +28,19 @@ const App = () => {
 
     const handleSumNumbers = () => {
         if(firstNumber === '0'){
-            setFirstNumber(String(currentNumber));
+            setFirstNumber(currentNumber.replace(',', '.'));
             setCurrentNumber('0')
             setOperation('+')
         }
         else{
-            const sum = Number(firstNumber) + Number(currentNumber);
-            setCurrentNumber(String(sum));
-            setOperation('')  
+            const num1 = Number(firstNumber.replace(',', '.'));
+            const num2 = Number(currentNumber.replace(',', '.'));
+            
+            if (!isNaN(num1) && !isNaN(num2)) {
+                const sum = num1 + num2;
+                setCurrentNumber(String(sum).replace('.', ','));
+                setOperation('');
+            }
         }
     }
 
@@ -46,11 +51,17 @@ const App = () => {
             setOperation('-')
         }
         else{
-            const sum = Number(firstNumber) - Number(currentNumber);
-            setCurrentNumber(String(sum));
-            setOperation('')  
+            const num1 = Number(firstNumber.replace(',', '.'));
+        const num2 = Number(currentNumber.replace(',', '.'));
+        if (!isNaN(num1) && !isNaN(num2)) {
+            const difference = num1 - num2;
+            setCurrentNumber(String(difference).replace('.', ','));
+            setOperation('');
+        } else {
+            console.error('Invalid numbers for subtraction:', num1, num2);
         }
     }
+}
 
     const handleMultiplyNumbers = () => {
         if(firstNumber === '0'){
@@ -58,23 +69,38 @@ const App = () => {
             setCurrentNumber('0')
             setOperation('X')
         }
-        else{
-            const sum = Number(firstNumber) * Number(currentNumber);
-            setCurrentNumber(String(sum));
-            setOperation('')
+        else {
+            const num1 = Number(firstNumber.replace(',', '.'));
+            const num2 = Number(currentNumber.replace(',', '.'));
+            if (!isNaN(num1) && !isNaN(num2)) {
+                const product = num1 * num2;
+                setCurrentNumber(String(product).replace('.', ','));
+                setOperation('');
+            } else {
+                console.error('Invalid numbers for multiplication:', num1, num2);
+            }
         }
     }
-
     const handleDivideNumbers = () => {
         if(firstNumber === '0') {
             setFirstNumber(String(currentNumber));
             setCurrentNumber('0')
             setOperation('/')
-        }
-        else{
-            const sum = Number(firstNumber) / Number(currentNumber);
-            setCurrentNumber(String(sum));
-            setOperation('')
+        } else {
+            const num1 = Number(firstNumber.replace(',', '.'));
+            const num2 = Number(currentNumber.replace(',', '.'));
+            if (!isNaN(num1) && !isNaN(num2)) {
+                if (num2 !== 0) {
+                    const quotient = num1 / num2;
+                    setCurrentNumber(String(quotient).replace('.', ','));
+                    setOperation('');
+                } else {
+                    console.error('Division by zero error');
+                    setCurrentNumber('Error');
+                }
+            } else {
+                console.error('Invalid numbers for division:', num1, num2);
+            }
         }
     }
 
@@ -83,11 +109,16 @@ const App = () => {
             setFirstNumber(String(currentNumber));
             setCurrentNumber('0')
             setOperation('^')
-        }
-        else{
-            const result = Math.pow(Number(firstNumber), Number(currentNumber))
-            setCurrentNumber(String(result));
-            setOperation('')
+        } else {
+            const base = Number(firstNumber.replace(',', '.'));
+            const exponent = Number(currentNumber.replace(',', '.'));
+            if (!isNaN(base) && !isNaN(exponent)) {
+                const result = Math.pow(base, exponent);
+                setCurrentNumber(String(result).replace('.', ','));
+                setOperation('');
+            } else {
+                console.error('Invalid numbers for exponentiation:', base, exponent);
+            }
         }
     }
 
@@ -95,11 +126,15 @@ const App = () => {
         if(firstNumber === '0'){
             setFirstNumber(String(currentNumber));
             setOperation('√')
-        }
-        else{
-            const result = Math.sqrt(firstNumber)
-            setCurrentNumber(String(result));
-            setOperation('')
+        } else {
+            const value = Number(firstNumber.replace(',', '.'));
+            if (!isNaN(value)) {
+                const result = Math.sqrt(value);
+                setCurrentNumber(String(result).replace('.', ','));
+                setOperation('');
+            } else {
+                console.error('Invalid number for square root:', value);
+            }
         }
     }
 
@@ -108,34 +143,47 @@ const App = () => {
             setFirstNumber(String(currentNumber));
             setCurrentNumber('0')
             setOperation('||')
-        }
-        else{
-            const result = Number(firstNumber) % Number(currentNumber);
-            setCurrentNumber(String(result));
-            setOperation('')
+        } else {
+            const num1 = Number(firstNumber.replace(',', '.'));
+            const num2 = Number(currentNumber.replace(',', '.'));
+            if (!isNaN(num1) && !isNaN(num2)) {
+                const result = num1 % num2;
+                setCurrentNumber(String(result).replace('.', ','));
+                setOperation('');
+            } else {
+                console.error('Invalid numbers for modulo operation:', num1, num2);
+            }
         }
     }
-
     const handlePercentage = () =>{
         if(firstNumber === '0') {
             setFirstNumber(String(currentNumber));
             setCurrentNumber('0')
             setOperation('%')
-        }
-        else{
-            const result = Number(firstNumber) * (Number(currentNumber) / 100);
-            setCurrentNumber(String(result));
-            setOperation('')
+        } else {
+            const base = Number(firstNumber.replace(',', '.'));
+            const percent = Number(currentNumber.replace(',', '.'));
+            if (!isNaN(base) && !isNaN(percent)) {
+                const result = base * (percent / 100);
+                setCurrentNumber(String(result).replace('.', ','));
+                setOperation('');
+            } else {
+                console.error('Invalid numbers for percentage calculation:', base, percent);
+            }
         }
     }
-
+    
     const handleOnePerX = () => {
-        setCurrentNumber(String(currentNumber));
-        const result = 1 / currentNumber;
-        setCurrentNumber(String(result));
-        setOperation('')
+        const value = Number(currentNumber.replace(',', '.'));
+        if (!isNaN(value) && value !== 0) {
+            const result = 1 / value;
+            setCurrentNumber(String(result).replace('.', ','));
+            setOperation('');
+        } else {
+            console.error('Invalid number for 1/x operation:', value);
+            setCurrentNumber('Error');
+        }
     }
-
     const handleToggleSign = () => {
         setCurrentNumber((prev) => {
             return prev.startsWith('-') ? prev.slice(1) : '-' + prev;

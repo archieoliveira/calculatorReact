@@ -17,11 +17,11 @@ export const InputContainer = styled.div`
         height: 75px;
         background-color: #AAAAFF;
         border: 0;
-        display: flex;
-        flex-direction: column;
         padding: 0 10px;
         font-size: 24px;
         font-family: 'Roboto';
         color: #FFFFFF;
+        font-weight: 700;
+        text-align: right; 
     }
 `
